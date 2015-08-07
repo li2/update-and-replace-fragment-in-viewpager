@@ -3,8 +3,12 @@
 
     <string name="app_name">UpdateReplaceFragmentInViewPager</string>
     <string name="app_intro">This is a demo to show how to update and replace Fragment in ViewPager.</string>
+    <string name="one_day_plus">page 0 day +1</string>
+    <string name="one_day_minus">page 0 day -1</string>
     <string name="page0_title">A single Fragment on page 0</string> 
     <string name="page1_title">A single Fragment on page 1</string>
     <string name="page2_title">A single Fragment on page 2</string>
+    <string name="updating_page1_hint">updating page 1 content</string>
+    <string name="updating_page2_hint">updating page 2 checkbox</string>
     
 </resources>

@@ -9,13 +9,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/app_intro"/>
+        android:text="@string/app_intro" />
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+        
+        <Button
+            android:id="@+id/main_dayPlusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/one_day_plus" />
+        <Button
+            android:id="@+id/main_dayMinusButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/one_day_minus" />
+        
+    </LinearLayout>
+    
+    <EditText
+        android:id="@+id/main_editContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/updating_page1_hint" />
+    
+    <CheckBox
+        android:id="@+id/main_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/updating_page2_hint" />"
     
     <android.support.v4.view.ViewPager
-        android:id="@+id/viewpPager"
+        android:id="@+id/main_viewpPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-        
-    
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp" />
     
 </LinearLayout>
