@@ -18,20 +18,23 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
+import android.widget.Switch;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private static final String TAG = "UpdateFragment_main";
-    private static final int PAGE_COUNT = 3;
+    private static final int PAGE_COUNT = 4;
     private ViewPager mViewPager;
     private Button mDayPlusButton;
     private Button mDayMinusButton;
     private EditText mEditorText;
     private CheckBox mCheckBox;
+    private Switch mSwitch;
     
     private Date mDate;
     private String mContent;
     private boolean mChecked;
+    private int mFragmentToShow;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +52,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mEditorText = (EditText) findViewById(R.id.main_editContent);
         mEditorText.addTextChangedListener(mTextWatcher);
         mCheckBox = (CheckBox) findViewById(R.id.main_checkbox);
-        mCheckBox.setOnCheckedChangeListener(mOnCheckedChangeListener);
+        mCheckBox.setOnCheckedChangeListener(mPage2CheckedChangeListener);
+        mSwitch = (Switch) findViewById(R.id.main_switch);
+        mSwitch.setOnCheckedChangeListener(mPage3CheckedChangeListener);
         
         mDate = new Date();
         mContent = "Hello World, I'm li2.";
         mChecked = true;
+        mFragmentToShow = 0;
     }
     
     private FragmentPagerAdapter mViewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -70,6 +76,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 return Page1Fragment.newInstance(mContent);
             } else if (position == 2) {
                 return Page2Fragment.newInstance(mChecked);
+            } else if (position == 3) {
+                return ContainerFragment.newInstance(0, mDate, mContent); 
             }
             return null;
         }
@@ -85,6 +93,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 ((Page1Fragment) object).updateContent(mContent);
             } else if (object instanceof Page2Fragment) {
                 ((Page2Fragment) object).updateCheckedStatus(mChecked);
+            } else if (object instanceof ContainerFragment) {
+                ((ContainerFragment) object).updateData(mFragmentToShow, mDate, mContent);
             }
             return super.getItemPosition(object);
         };
@@ -146,10 +156,19 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     };
     
     // page 2 data changed
-    private OnCheckedChangeListener mOnCheckedChangeListener = new OnCheckedChangeListener() {
+    private OnCheckedChangeListener mPage2CheckedChangeListener = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             mChecked = isChecked;
+            notifyViewPagerDataSetChanged();
+        }
+    };
+    
+    // page 3 data changed
+    private OnCheckedChangeListener mPage3CheckedChangeListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            mFragmentToShow = (isChecked) ? 1 : 0;
             notifyViewPagerDataSetChanged();
         }
     };

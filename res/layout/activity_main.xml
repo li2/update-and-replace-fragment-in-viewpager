@@ -39,7 +39,14 @@
         android:id="@+id/main_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/updating_page2_hint" />"
+        android:hint="@string/updating_page2_hint" />
+    
+    <Switch
+        android:id="@+id/main_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="@string/replace_page1"
+        android:textOff="@string/replace_page0" />
     
     <android.support.v4.view.ViewPager
         android:id="@+id/main_viewpPager"
