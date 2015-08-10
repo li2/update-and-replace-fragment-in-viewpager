@@ -1,3 +1,9 @@
+/*
+ *     Created by WeiYi Li
+ *     2015-08-07
+ *     weiyi.just2@gmail.com
+ *     li2.me
+ */
 package me.li2.update_replace_fragment_in_viewpager;
 
 import java.util.Date;

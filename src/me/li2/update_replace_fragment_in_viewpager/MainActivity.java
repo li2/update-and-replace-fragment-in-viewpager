@@ -1,6 +1,14 @@
+/*
+ *     Created by WeiYi Li
+ *     2015-08-07
+ *     weiyi.just2@gmail.com
+ *     li2.me
+ */
 package me.li2.update_replace_fragment_in_viewpager;
 
 import java.util.Date;
+
+import com.viewpagerindicator.CirclePageIndicator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -44,6 +52,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mViewPager = (ViewPager) findViewById(R.id.main_viewpPager);
         mViewPager.setAdapter(mViewPagerAdapter);
         mViewPager.setOnPageChangeListener(mPageChangeListener);
+
+        CirclePageIndicator indicator = (CirclePageIndicator) findViewById(R.id.main_viewPager_indicator);
+        indicator.setViewPager(mViewPager);
+        indicator.setOnPageChangeListener(mPageChangeListener);        
         
         mDayPlusButton = (Button) findViewById(R.id.main_dayPlusButton);
         mDayMinusButton = (Button) findViewById(R.id.main_dayMinusButton);
