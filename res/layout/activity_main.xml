@@ -3,12 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="me.li2.update_replace_fragment_in_viewpager.MainActivity"
-    android:orientation="vertical" >
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical" > <!-- stop EditText get focus at activity startup -->
     
     <TextView 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:padding="8dp"
         android:text="@string/app_intro" />
     
     <LinearLayout
@@ -19,13 +21,15 @@
         <Button
             android:id="@+id/main_dayPlusButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/one_day_plus" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/one_day_plus"
+            android:textSize="@dimen/font_size" />
         <Button
             android:id="@+id/main_dayMinusButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/one_day_minus" />
+            android:layout_height="@dimen/button_height"
+            android:text="@string/one_day_minus"
+            android:textSize="@dimen/font_size" />
         
     </LinearLayout>
     
@@ -33,21 +37,37 @@
         android:id="@+id/main_editContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/updating_page1_hint" />
+        android:hint="@string/updating_page1_hint"
+        android:textSize="@dimen/font_size" />
     
     <CheckBox
         android:id="@+id/main_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="@string/updating_page2_hint" />
+        android:hint="@string/updating_page2_hint"
+        android:textSize="@dimen/font_size" />
     
     <Switch
         android:id="@+id/main_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textOn="@string/replace_page1"
-        android:textOff="@string/replace_page0" />
+        android:textOff="@string/replace_page0"
+        android:textSize="@dimen/font_size" />
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/log_view_height"
+        android:background="@android:color/darker_gray" >
+        
+        <TextView
+            android:id="@+id/main_logView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lines="256"/>
+        
+    </ScrollView>
+    
     <FrameLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -55,8 +75,7 @@
 	    <android.support.v4.view.ViewPager
 	        android:id="@+id/main_viewpPager"
 	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="32dp" />
+	        android:layout_height="wrap_content" />
 	    
 	    <com.viewpagerindicator.CirclePageIndicator
 	        android:id="@+id/main_viewPager_indicator"

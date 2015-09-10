@@ -6,8 +6,11 @@
  */
 package me.li2.update_replace_fragment_in_viewpager;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -20,7 +23,7 @@ import android.widget.FrameLayout;
 
 public class ContainerFragment extends Fragment {
     
-    private static final String TAG = "UpdateFragment_ContainerFragment";
+    private static final String TAG = "Fragment4";
     private static final String EXTRA_FRAGMENT_TO_SHOW = "me.li2.update_replace_fragment_in_viewpager.extra_fragment_to_show";
     private static final String EXTRA_DATE = "me.li2.update_replace_fragment_in_viewpager.extra_date";
     private static final String EXTRA_CONTENT = "me.li2.update_replace_fragment_in_viewpager.extra_content";
@@ -31,7 +34,7 @@ public class ContainerFragment extends Fragment {
     private int mFragmentContainerId;
 
     public static ContainerFragment newInstance(int fragmentToShow, Date date, String content) {
-        Log.d(TAG, String.format("newInstance(fragmentToShow=%d, Date=%s, Content=%s", fragmentToShow, date.toString(), content));
+        Log.d(TAG, String.format("newInstance(fragmentToShow=%d, Date=%s, Content=%s", fragmentToShow, formatDate(date), content));
         Bundle args = new Bundle();
         args.putInt(EXTRA_FRAGMENT_TO_SHOW, fragmentToShow);
         args.putLong(EXTRA_DATE, date.getTime());
@@ -52,6 +55,24 @@ public class ContainerFragment extends Fragment {
     }
     
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy()");
+    }
+    
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        Log.d(TAG, "onAttach()");
+    }
+    
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.d(TAG, "onDetach()");
+    }    
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Log.d(TAG, "onCreateView()");
         View view = inflater.inflate(R.layout.fragment_container, container, false);
@@ -64,26 +85,34 @@ public class ContainerFragment extends Fragment {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         Fragment oldFragment = fm.findFragmentById(fragmentContainerId);
+        Fragment newFragment;
         if (oldFragment != null) {
             ft.remove(oldFragment);
         }
-        Log.d(TAG, "add fragment");
         if (mFragmentToShow == 0) {
-            ft.add(fragmentContainerId, Page0Fragment.newInstance(mDate));
+            newFragment = Page0Fragment.newInstance(mDate);
         } else {
-            ft.add(fragmentContainerId, Page1Fragment.newInstance(mContent));
+            newFragment = Page1Fragment.newInstance(mContent);
         }
+        ft.add(fragmentContainerId, newFragment);
         ft.commit();
+        Log.d(TAG, "add fragment " + newFragment.getClass().getSimpleName());
         
         return view;
     }
-
+    
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG, "onDestroyView()");
+    }
+    
     // To replace fragment in ViewPager, we implement a fragment with a framelayout, we call it as ContainerFragment,
     // We pass a variable "fragmentToShow" to nofity the ContainerFragment,
     // depending on "fragmentToShow", the ContainerFragment decide whether replace old fragment with new fragment, or
     // update old fragment.
     public void updateData(int fragmentToShow, Date date, String content) {
-        Log.d(TAG, String.format("updateData(fragmentToShow=%d, Date=%s, Content=%s", fragmentToShow, date.toString(), content));
+        Log.d(TAG, String.format("updateData(fragmentToShow=%d, Date=%s, Content=%s", fragmentToShow, formatDate(date), content));
         mDate = date;
         mContent = content;
 
@@ -109,5 +138,10 @@ public class ContainerFragment extends Fragment {
                 }
             }
         }
+    }
+    
+    private static String formatDate(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return sdf.format(date);
     }
 }

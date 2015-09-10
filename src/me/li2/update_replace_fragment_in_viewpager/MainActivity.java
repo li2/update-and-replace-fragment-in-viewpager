@@ -6,9 +6,10 @@
  */
 package me.li2.update_replace_fragment_in_viewpager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
-
-import com.viewpagerindicator.CirclePageIndicator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -27,17 +28,22 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
+
+import com.viewpagerindicator.CirclePageIndicator;
 
 public class MainActivity extends FragmentActivity implements OnClickListener {
 
-    private static final String TAG = "UpdateFragment_main";
-    private static final int PAGE_COUNT = 4;
+    private static final String TAG = "Adapter";
+    private static final int PAGE_COUNT = 5;
+    private static final int LOG_COLLECT_INTERVAL = 200; // ms
     private ViewPager mViewPager;
     private Button mDayPlusButton;
     private Button mDayMinusButton;
     private EditText mEditorText;
     private CheckBox mCheckBox;
     private Switch mSwitch;
+    private TextView mLogView;
     
     private Date mDate;
     private String mContent;
@@ -67,11 +73,19 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         mCheckBox.setOnCheckedChangeListener(mPage2CheckedChangeListener);
         mSwitch = (Switch) findViewById(R.id.main_switch);
         mSwitch.setOnCheckedChangeListener(mPage3CheckedChangeListener);
+        mLogView = (TextView) findViewById(R.id.main_logView);
         
         mDate = new Date();
         mContent = "Hello World, I'm li2.";
         mChecked = true;
         mFragmentToShow = 0;
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        clearLogcat();
+        startCollectLogcatThread();
     }
     
     private FragmentPagerAdapter mViewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -80,8 +94,10 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             return PAGE_COUNT;
         }
 
+        // Return the Fragment associated with a specified position.
         @Override
         public Fragment getItem(int position) {
+            Log.d(TAG, "getItem(" + position + ")");
             if (position == 0) {
                 return Page0Fragment.newInstance(mDate);
             } else if (position == 1) {
@@ -89,10 +105,19 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             } else if (position == 2) {
                 return Page2Fragment.newInstance(mChecked);
             } else if (position == 3) {
+                return Page3Fragment.newInstance();
+            } else if (position == 4) {
                 return ContainerFragment.newInstance(0, mDate, mContent); 
             }
             return null;
         }
+        
+        // Remove a page for the given position. The adapter is responsible for removing the view from its container.
+        @Override
+        public void destroyItem(android.view.ViewGroup container, int position, Object object) {
+            super.destroyItem(container, position, object);
+            Log.d(TAG, "destroyItem(" + position + ")");
+        };
         
         @Override
         // To update fragment in ViewPager, we should override getItemPosition() method,
@@ -116,7 +141,9 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private ViewPager.OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            notifyViewPagerDataSetChanged();
+            clearLogcat();
+            Log.d(TAG, "onPageSelected(" + position + ")");
+            // notifyViewPagerDataSetChanged();
         }
         
         @Override
@@ -125,7 +152,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
         @Override
         public void onPageScrollStateChanged(int state) {}
     };
-
+    
     
     /** 
      * To update fragment in ViewPager, we should call PagerAdapter.notifyDataSetChanged() when data changed.
@@ -134,6 +161,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      * Refer to [Update Fragment from ViewPager](http://stackoverflow.com/a/18088509/2722270) 
      */    
     private void notifyViewPagerDataSetChanged() {
+        clearLogcat();
         Log.d(TAG, "notifyDataSetChanged()");
         mViewPagerAdapter.notifyDataSetChanged();
     }
@@ -184,4 +212,61 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
             notifyViewPagerDataSetChanged();
         }
     };
+    
+    
+    // Collect all logcat of this app then display in scroll textview,
+    // to show the detail of PagerAdapter method and Fragment life cycle
+    // when user scroll or change page.
+    private void startCollectLogcatThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    collectLogcat();
+                    try {
+                        Thread.sleep(LOG_COLLECT_INTERVAL);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();;
+    }
+    
+    private void clearLogcat() {
+        String cmd = "logcat -c";
+        try {
+            Runtime.getRuntime().exec(cmd);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    // Colllect logcat and display in TextView
+    // http://tanxiaoya105.blog.163.com/blog/static/2103280192012101392053176
+    // [logcat with mutiple tags at one time](http://stackoverflow.com/a/16995884/2722270)
+    private void collectLogcat() {
+        try {
+            String cmd = "logcat -d Adapter:D Fragment0:D Fragment1:D Fragment2:D Fragment3:D Fragment4:D *:S";
+            Process process = Runtime.getRuntime().exec(cmd);
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            StringBuilder log =  new StringBuilder();
+            String line = "";
+            while ((line = bufferedReader.readLine()) != null) {
+                log.append(line + "\n");
+            }
+            updateLogView(log.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void updateLogView(final String log) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mLogView.setText(log);
+            }
+        });
+    }
 }
