@@ -58,7 +58,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="@dimen/log_view_height"
-        android:background="@android:color/darker_gray" >
+        android:background="@android:color/darker_gray"
+        android:fadeScrollbars="false" >
         
         <TextView
             android:id="@+id/main_logView"

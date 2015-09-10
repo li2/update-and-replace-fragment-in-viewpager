@@ -36,7 +36,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
 
     private static final String TAG = "Adapter";
     private static final int PAGE_COUNT = 5;
-    private static final int LOG_COLLECT_INTERVAL = 200; // ms
+    private static final int LOG_COLLECT_INTERVAL = 500; // ms
     private ViewPager mViewPager;
     private Button mDayPlusButton;
     private Button mDayMinusButton;
@@ -49,7 +49,8 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private String mContent;
     private boolean mChecked;
     private int mFragmentToShow;
-    
+    private boolean mShouldExitLogThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,8 +85,14 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        clearLogcat();
+        mShouldExitLogThread = false;
         startCollectLogcatThread();
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mShouldExitLogThread = true;
     }
     
     private FragmentPagerAdapter mViewPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -141,8 +148,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     private ViewPager.OnPageChangeListener mPageChangeListener = new OnPageChangeListener() {
         @Override
         public void onPageSelected(int position) {
-            clearLogcat();
-            Log.d(TAG, "onPageSelected(" + position + ")");
+            Log.d(TAG, "\nonPageSelected(" + position + ")");
             // notifyViewPagerDataSetChanged();
         }
         
@@ -161,8 +167,7 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
      * Refer to [Update Fragment from ViewPager](http://stackoverflow.com/a/18088509/2722270) 
      */    
     private void notifyViewPagerDataSetChanged() {
-        clearLogcat();
-        Log.d(TAG, "notifyDataSetChanged()");
+        Log.d(TAG, "\nnotifyDataSetChanged()");
         mViewPagerAdapter.notifyDataSetChanged();
     }
 
@@ -218,10 +223,11 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
     // to show the detail of PagerAdapter method and Fragment life cycle
     // when user scroll or change page.
     private void startCollectLogcatThread() {
+        clearLogcat();
         new Thread(new Runnable() {
             @Override
             public void run() {
-                while(true) {
+                while(!mShouldExitLogThread) {
                     collectLogcat();
                     try {
                         Thread.sleep(LOG_COLLECT_INTERVAL);
