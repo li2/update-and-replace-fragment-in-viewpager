@@ -80,11 +80,13 @@ FragmentPagerAdapter和FragmentStatePagerAdapter对Fragment的管理略有不同
 
 *说明：这两张图片来自于《Android权威编程指南》，原图有3个Fragment，我增加了1个Fragment，以及被调到的方法。*
 FragmentPagerAdapter的Fragment管理：
+
 ![image-11-4-FragmentPagerAdapter的fragment管理-方法调用](https://github.com/li2/Update_Replace_Fragment_In_ViewPager/blob/master/图11-4-FragmentPagerAdapter的fragment管理-方法调用.png)
-图11-4-FragmentPagerAdapter的fragment管理-方法调用.png
+
+
 FragmentStatePageAdapter的Fragment管理：
 ![image-11-3FragmentStatePagerAdapter的fragment管理-方法调用](https://github.com/li2/Update_Replace_Fragment_In_ViewPager/blob/master/图11-3FragmentStatePagerAdapter的fragment管理-方法调用.png)
-图11-3FragmentStatePagerAdapter的fragment管理-方法调用.png
+
 
 ### 详细分析 adapter method和fragment lifecycle method 的调用情况
 
@@ -268,10 +270,12 @@ D/Fragment2(21517): updateCheckedStatus(true)
 为了总结ViewPager的用法，以及写这篇笔记，我写了一个demo，[你可以从这里获取它的源码 github.com/li2/](https://github.com/li2/Update_Replace_Fragment_In_ViewPager)
 
 这一张gif图片，演示了一个包含4个Fragment的ViewPager，通过上面的date+-1 button、EditText、Checkbox来更新前3个Fragment的界面；最后一个Fragment嵌套着2个Fragment，通过ToggleButton来切换。
+
 ![image-update_fragment_in_viewpager_demo](https://github.com/li2/Update_Replace_Fragment_In_ViewPager/blob/master/update_fragment_in_viewpager_demo.gif)
 
 
 这一张gif演示了切换ViewPager页以及更新Fragment时，相关的方法调用。通过一个ScrollView和TextView展示出来。
+
 ![image-update_fragment_in_viewpager_withlog](https://github.com/li2/Update_Replace_Fragment_In_ViewPager/blob/master/update_fragment_in_viewpager_log.gif)
 
 
@@ -316,15 +320,3 @@ Fragment里有一个ViewPager，ViewPager里有多个Fragment.
 
 Copyright (C) 2015 WeiYi Li (li21)    weiyi.just2@gmail.com    li2.me
 **特别声明：禁止转载**
-
-
-
-
-
-
-
-
-
-
-
-![Image](https://github.com/li2/Update_Replace_Fragment_In_ViewPager/blob/master/update_fragment_in_viewpager_demo.gif)
