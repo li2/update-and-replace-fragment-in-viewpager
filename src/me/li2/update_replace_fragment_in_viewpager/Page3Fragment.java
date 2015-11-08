@@ -12,6 +12,10 @@ public class Page3Fragment extends Fragment {
     
     private static final String TAG = "Fragment3";
 
+    public Page3Fragment() {
+        super();
+    }
+    
     public static Page3Fragment newInstance() {
         Log.d(TAG, "newInstance()");
         return new Page3Fragment();

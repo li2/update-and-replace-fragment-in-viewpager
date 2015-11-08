@@ -111,10 +111,26 @@ public class MainActivity extends FragmentActivity implements OnClickListener {
                 return Page1Fragment.newInstance(mContent);
             } else if (position == 2) {
                 return Page2Fragment.newInstance(mChecked);
-            } else if (position == 3) {
-                return Page3Fragment.newInstance();
+            } else if (position == 3) {                
+                // return Page3Fragment.newInstance();
+                return getFragment(3);
             } else if (position == 4) {
                 return ContainerFragment.newInstance(0, mDate, mContent); 
+            }
+            
+            return null;
+        }
+        
+        private Fragment getFragment(int pageValue) {
+            SimpleBackPage page = SimpleBackPage.getPageValue(pageValue);
+            Fragment fragment;
+            try {
+                fragment = (Fragment) page.getCls().newInstance();
+                return fragment;
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
             return null;
         }
