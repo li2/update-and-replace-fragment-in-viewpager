@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/weiyi/Library/Android/sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.1/support-annotations-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="61a0ff5c29295ec56d7e0bd3d25d95dbf71b4b2b">
+        <dex dex="/Users/weiyi/Develop/MyGitHub/Update_Replace_Fragment_In_ViewPager/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.1_f091099cf55696cc10118beabfd6ae0045510c5d.jar" />
+    </item>
+    <item
+        jar="/Users/weiyi/Develop/MyGitHub/Update_Replace_Fragment_In_ViewPager/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/libs/internal_impl-22.2.1.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="c471eaaba13ff64f6e0383d1c30a9cdc9a97efeb">
+        <dex dex="/Users/weiyi/Develop/MyGitHub/Update_Replace_Fragment_In_ViewPager/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.1_dfea2967f72d354739fd91dceb3296f37ecf8afd.jar" />
+    </item>
+    <item
+        jar="/Users/weiyi/Develop/MyGitHub/Update_Replace_Fragment_In_ViewPager/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.1/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.2"
+        sha1="f8efd0096475e0daf054267b61544e10dc776503">
+        <dex dex="/Users/weiyi/Develop/MyGitHub/Update_Replace_Fragment_In_ViewPager/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-22.2.1_14feb04e4e08f9f9fcedff82684033d02649edc2.jar" />
+    </item>
+
+</items>
